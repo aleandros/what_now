@@ -8,5 +8,6 @@ Gem::Specification.new do |s|
   s.email       = 'edgar@cafeinacode.com'
   s.license			= 'MIT'
   s.homepage    = 'https://github.com/aleandros/what_now'
+  s.files       = Dir['lib/*.rb'] + Dir['bin/*']
   s.executables << 'wnow'
 end
