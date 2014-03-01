@@ -7,7 +7,7 @@ Todo = Struct.new :text, :path, :line
 module WhatNow
   class << self
     def search_line(line, line_number, path)
-      text = /TODO[:\s]*\s(.+)$/.match(line)
+      text = /TODO[:\s]*\s(.+)$/i.match(line)
       Todo.new(text[1], line_number, path) if text
     end
 
