@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+require 'thor'
+require 'colorize'
+require 'what_now'
+
+class Wnow < Thor
+  default_task :find
+
+  desc 'find', 'search files in directory for todo elements (default command)'
+  option :dir, aliases: '-d'
+  option :ext, aliases: '-e'
+  def find
+    dir = options[:dir] || Dir.pwd
+    ext = options[:ext] ? "/**/*.#{options[:ext]}" : '/**/*.*'
+    todos = WhatNow.search_directory(dir + ext)
+    todos.each do |t|
+      printable_path = options[:dir] ? t.path : t.path[Dir.pwd.length+1..t.path.length]
+      puts t.text.red.bold
+      puts "at line #{t.line.to_s.blue} in #{printable_path.blue.underline}"
+      puts
+    end
+  end
+end
+
+Wnow.start(ARGV)
