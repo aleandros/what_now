@@ -7,5 +7,6 @@ Gem::Specification.new do |s|
   s.authors     = ['Edgar Cabrera']
   s.email       = 'edgar@cafeinacode.com'
   s.license			= 'MIT'
+  s.homepage    = 'https://github.com/aleandros/what_now'
   s.executables << 'wnow'
 end
