@@ -20,7 +20,7 @@ sudo gem install what_now
 Usage
 -----
 ```
-$wnow
+$ wnow
 ```
 Will return all the todos in the following format inside files:
 
