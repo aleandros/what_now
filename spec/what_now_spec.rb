@@ -21,7 +21,7 @@ describe WhatNow do
 
     it 'returns nil with a non todo line' do
       WhatNow.search_line('this is not a todo', 1, '.')
-        .must_be_nil 
+        .must_be_nil
     end
   end
 
