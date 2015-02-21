@@ -7,7 +7,7 @@ gem 'thor'
 gem 'colorize'
 
 group :test do
-  gem 'minitest-reporters' 
+  gem 'minitest-reporters'
 end
 
 gemspec
