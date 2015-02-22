@@ -31,3 +31,5 @@ Where 'this is the text' will be returned, together with the path and line numbe
 You can also use the options *--dir, -d*, in order to specify the directory in which
 todos are going to be looked for, and *--ext -e* for checking only certain file extension
 (without prepending the '.', this means, call *--ext rb* instead of *--ext .rb*).
+You can optionally ignore casing for your *TODO* comments, in which case you may
+pass the option *--ignorecase, -i*.
