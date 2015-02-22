@@ -11,17 +11,40 @@ end
 
 describe WhatNow do
   describe '#search_line' do
-    subject do
-      WhatNow.search_line('TODO this is a todo', 1, '.')
+    describe 'with case sensitivity' do
+      subject do
+        WhatNow.search_line('TODO this is a todo', 1, '.')
+      end
+
+      it 'correctly extracts text from todo' do
+        subject.text.must_match 'this is a todo'
+      end
+
+      it 'returns nil with a non todo line' do
+        WhatNow.search_line('this is not a todo', 1, '.')
+          .must_be_nil
+      end
+
+      it 'returns nil in a downcase todo' do
+        WhatNow.search_line('todo this is not a todo', 1, '.')
+          .must_be_nil
+      end
     end
 
-    it 'correctly extracts text from todo' do
-      subject.text.must_match 'this is a todo'
-    end
+    describe 'with case insensitivity' do
+      before do
+        WhatNow.ignorecase
+      end
 
-    it 'returns nil with a non todo line' do
-      WhatNow.search_line('this is not a todo', 1, '.')
-        .must_be_nil
+      it 'extracts the text from the TODO in uppercase' do
+        WhatNow.search_line('TODO this is a todo', 1, '.')
+          .text.must_match 'this is a todo'
+      end
+
+      it 'extracts the text from the TODO in downcase' do
+        WhatNow.search_line('todo this is a todo', 1, '.')
+          .text.must_match 'this is a todo'
+      end
     end
   end
 

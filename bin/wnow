@@ -9,9 +9,11 @@ class Wnow < Thor
   desc 'find', 'search files in directory for todo elements (default command)'
   option :dir, aliases: '-d'
   option :ext, aliases: '-e'
+  option :ignorecase, aliases: '-i'
   def find
     dir = options[:dir] || Dir.pwd
     ext = options[:ext] ? "/**/*.#{options[:ext]}" : '/**/*.*'
+    WhatNow.ignorecase if options[:ignorecase]
     todos = WhatNow.search_directory(dir + ext)
     todos.each do |t|
       printable_path = options[:dir] ? t.path : t.path[Dir.pwd.length+1..t.path.length]
