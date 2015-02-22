@@ -1,9 +1,7 @@
 # What_now definitions
 
 require 'ptools'
-
-# TODO this struct should know how to print itself
-Todo = Struct.new :text, :path, :line
+require 'todo'
 
 module WhatNow
   class << self
