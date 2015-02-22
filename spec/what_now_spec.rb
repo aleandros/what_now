@@ -1,48 +1,63 @@
 require_relative 'spec_helper'
 
-describe WhatNow do
-  describe '#search_line' do
+describe TodoCreator do
+  describe '#match' do
     describe 'with case sensitivity' do
       subject do
-        WhatNow.search_line('TODO this is a todo', 1, '.')
+        TodoCreator.new
       end
 
       it 'correctly extracts text from todo' do
-        subject.text.must_match 'this is a todo'
+        subject.match('TODO this is a todo', '.', 1)
+          .text.must_match 'this is a todo'
       end
 
       it 'returns nil with a non todo line' do
-        WhatNow.search_line('this is not a todo', 1, '.')
+        subject.match('this is not a todo', '.', 1)
           .must_be_nil
       end
 
       it 'returns nil in a downcase todo' do
-        WhatNow.search_line('todo this is not a todo', 1, '.')
+        subject.match('todo this is not a todo', '.', 1)
           .must_be_nil
       end
     end
 
     describe 'with case insensitivity' do
-      before do
-        WhatNow.ignorecase
+      subject do
+        TodoCreator.new ignorecase: true
       end
 
       it 'extracts the text from the TODO in uppercase' do
-        WhatNow.search_line('TODO this is a todo', 1, '.')
+        subject.match('TODO this is a todo', '.', 1)
           .text.must_match 'this is a todo'
       end
 
       it 'extracts the text from the TODO in downcase' do
-        WhatNow.search_line('todo this is a todo', 1, '.')
+        subject.match('todo this is a todo', '.', 1)
           .text.must_match 'this is a todo'
       end
     end
-  end
 
-  describe '#search_file' do
+    describe 'object type returned' do
+      it 'default should be pretty' do
+        TodoCreator.new.match('TODO this is a todo', '.', 1)
+          .must_be_instance_of PrettyTodo
+      end
+
+      it 'non pretty can be specified' do
+        TodoCreator.new(pretty: false).match('TODO this is a todo', '.', 1)
+          .must_be_instance_of Todo
+      end
+    end
+  end
+end
+
+describe TodoFinder do
+  describe 'search single file' do
     subject do
       path = File.dirname(__FILE__) + '/example_file.txt'
-      WhatNow.search_file(path)
+      TodoFinder.new(path, TodoCreator.new).find
     end
 
     it 'found 2 todos' do
@@ -57,14 +72,18 @@ describe WhatNow do
     end
   end
 
-  describe '#search_directory' do
+  describe 'search with a pattern' do
     it 'considers only specified pattern' do
-      results = WhatNow.search_directory(File.dirname(__FILE__)+'/**/*.txt')
+      results = TodoFinder.new(
+        File.dirname(__FILE__)+'/**/*.txt',
+        TodoCreator.new).find
       results.length.must_equal 2
     end
 
     it 'returns empty array if nothing was found' do
-      results = WhatNow.search_directory(File.dirname(__FILE__)+'/**/*.mooo')
+      results = TodoFinder.new(
+        File.dirname(__FILE__)+'/**/*.mooo',
+        TodoCreator.new).find
       results.must_equal []
     end
   end

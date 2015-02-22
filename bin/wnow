@@ -13,13 +13,13 @@ class Wnow < Thor
   def find
     dir = options[:dir] || Dir.pwd
     ext = options[:ext] ? "/**/*.#{options[:ext]}" : '/**/*.*'
-    WhatNow.ignorecase if options[:ignorecase]
-    todos = WhatNow.search_directory(dir + ext)
-    todos.each do |t|
-      printable_path = options[:dir] ? t.path : t.path[Dir.pwd.length+1..t.path.length]
-      puts t.text.red.bold
-      puts "at line #{t.line.to_s.blue} in #{printable_path.blue.underline}"
-      puts
+    creator = TodoCreator.new(
+      ignorecase: options[:ignorecase],
+      pretty: STDOUT.tty?)
+    TodoFinder.new(dir + ext, creator).find.each do |todo|
+      # printable_path = options[:dir] ? t.path : t.path[Dir.pwd.length+1..t.path.length]
+      puts todo
+      puts if STDOUT.tty?
     end
   end
 end
