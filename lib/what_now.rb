@@ -2,6 +2,7 @@
 
 require 'ptools'
 
+# TODO this struct should know how to print itself
 Todo = Struct.new :text, :path, :line
 
 module WhatNow
