@@ -1,14 +1,5 @@
 require_relative 'spec_helper'
 
-describe Todo do
-  describe 'public interface' do
-    subject { Todo.new('do stuff', './stuff', 10) }
-    it { subject.must_respond_to :text }
-    it { subject.must_respond_to :path }
-    it { subject.must_respond_to :line }
-  end
-end
-
 describe WhatNow do
   describe '#search_line' do
     describe 'with case sensitivity' do
