@@ -18,22 +18,16 @@ module WhatNow
     end
 
     def search_file(path)
-      todos = []
-      unless File.binary?(path)
-        File.open(path).each_with_index do |line, i|
-          result = search_line(line, path, i+1)
-          todos << result if result
-        end
-      end
-      todos
+      return [] if File.binary? path
+      File.open(path).each_with_index.map do |line, i|
+        search_line(line, path, i+1)
+      end.delete_if { |l| l.nil? }
     end
 
     def search_directory(pattern)
-      todos = []
-      Dir[pattern].each do |file|
-        todos = todos + search_file(file)
+      Dir[pattern].flat_map do |file|
+        search_file(file)
       end
-      todos
     end
   end
 end
