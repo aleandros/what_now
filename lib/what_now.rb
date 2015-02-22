@@ -13,7 +13,12 @@ class TodoCreator
   def match(line, path, line_number)
     regex = @ignorecase ? /TODO:?\s*(.+)$/i : /TODO:?\s*(.+)$/
     text = regex.match(line)
-    @todo_class.new(text[1], path, line_number) if text
+    @todo_class.new(text[1], shortened_path(path), line_number) if text
+  end
+
+  private
+  def shortened_path(path)
+    path[Dir.pwd.length+1..path.length]
   end
 end
 

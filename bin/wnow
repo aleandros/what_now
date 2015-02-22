@@ -17,7 +17,6 @@ class Wnow < Thor
       ignorecase: options[:ignorecase],
       pretty: STDOUT.tty?)
     TodoFinder.new(dir + ext, creator).find.each do |todo|
-      # printable_path = options[:dir] ? t.path : t.path[Dir.pwd.length+1..t.path.length]
       puts todo
       puts if STDOUT.tty?
     end
