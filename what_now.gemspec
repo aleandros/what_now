@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'what_now'
-  s.version     = '0.0.4'
+  s.version     = '0.0.5'
   s.date        = '2014-02-27'
   s.summary     = 'Find todo comments in your code'
   s.description = 'Executable for finding todo comments on directories'
