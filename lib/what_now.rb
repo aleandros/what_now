@@ -14,6 +14,8 @@ class TodoCreator
     regex = @ignorecase ? /TODO:?\s*(.+)$/i : /TODO:?\s*(.+)$/
     text = regex.match(line)
     @todo_class.new(text[1], shortened_path(path), line_number) if text
+  rescue ArgumentError
+    nil
   end
 
   private
