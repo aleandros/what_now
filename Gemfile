@@ -8,6 +8,7 @@ gem 'colorize'
 
 group :test do
   gem 'minitest-reporters'
+  gem 'fakefs'
 end
 
 gemspec
