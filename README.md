@@ -26,10 +26,18 @@ Will return all the todos in the following format inside files:
 
 * TODO this is the text
 
-Where 'this is the text' will be returned, together with the path and line number
+Where 'this is the text' will be returned, together with the relative path and line number
 
-You can also use the options *--dir, -d*, in order to specify the directory in which
-todos are going to be looked for, and *--ext -e* for checking only certain file extension
-(without prepending the '.', this means, call *--ext rb* instead of *--ext .rb*).
-You can optionally ignore casing for your *TODO* comments, in which case you may
-pass the option *--ignorecase, -i*.
+The output is colored, but if redirected to a non TTY device, a simpler, colorless format
+will be used.
+
+Options
+-------
+* *--dir, -d*: Specify the directory in which to search the TODO's. It can be an absolute
+  path of anyhwere in the system, or a relative path to the current directory.
+* *--ext, -e*: Specify the extension of the files to consider. You can pass it with or without
+  the dot (.rb or rb are both valid).
+* *--regex, -r*: Specify the regular expression (Perl-like) that the file names
+  must match.
+* *--ignorecase, -i*: When passed, this options matches both the strings *TODO* and *todo*.
+  By default, this options is deactivated.
