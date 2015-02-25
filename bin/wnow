@@ -2,21 +2,37 @@
 require 'thor'
 require 'colorize'
 require 'what_now'
+require 'file_filter'
+require 'pathname'
 
 class Wnow < Thor
+  include Filtering
   default_task :find
 
   desc 'find', 'search files in directory for todo elements (default command)'
   option :dir, aliases: '-d'
   option :ext, aliases: '-e'
+  option :regex, aliases: '-r'
   option :ignorecase, aliases: '-i'
   def find
+    # Directory handling
+    current_dir = Pathname.getwd
     dir = options[:dir] || Dir.pwd
-    ext = options[:ext] ? "/**/*.#{options[:ext]}" : '/**/*.*'
-    creator = TodoCreator.new(
-      ignorecase: options[:ignorecase],
-      pretty: STDOUT.tty?)
-    TodoFinder.new(dir + ext, creator).find.each do |todo|
+    absolute_dir = Pathname.new(dir).expand_path.to_s
+
+    filter = NoDirectories
+            .chain(NoBinaries)
+            .chain(OnlyDirectory.new absolute_dir)
+    filter.chain(OnlyExtension.new options[:ext]) if options[:ext]
+    filter.chain(MatchRegex.new options[:regex]) if options[:regex]
+
+    relative_paths = Dir[absolute_dir + '/**/*'].map do |p|
+      Pathname.new(p).relative_path_from(current_dir).to_s
+    end
+    targets = filter.filter relative_paths
+
+    creator = TodoCreator.new(ignorecase: options[:ignorecase], pretty: STDOUT.tty?)
+    TodoFinder.new(targets, creator).find.each do |todo|
       puts todo
       puts if STDOUT.tty?
     end

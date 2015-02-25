@@ -56,8 +56,8 @@ end
 describe TodoFinder do
   describe 'search single file' do
     subject do
-      path = File.dirname(__FILE__) + '/example_file.txt'
-      TodoFinder.new(path, TodoCreator.new).find
+      paths = Dir[File.dirname(__FILE__) + '/example_file.txt']
+      TodoFinder.new(paths, TodoCreator.new).find
     end
 
     it 'found 2 todos' do
@@ -74,15 +74,17 @@ describe TodoFinder do
 
   describe 'search with a pattern' do
     it 'considers only specified pattern' do
+      paths = Dir[File.dirname(__FILE__)+'/**/*.txt']
       results = TodoFinder.new(
-        File.dirname(__FILE__)+'/**/*.txt',
+        paths,
         TodoCreator.new).find
       results.length.must_equal 2
     end
 
     it 'returns empty array if nothing was found' do
+      paths = Dir[File.dirname(__FILE__)+'/**/*.mooo']
       results = TodoFinder.new(
-        File.dirname(__FILE__)+'/**/*.mooo',
+        paths,
         TodoCreator.new).find
       results.must_equal []
     end

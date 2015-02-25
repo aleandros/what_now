@@ -13,22 +13,15 @@ class TodoCreator
   def match(line, path, line_number)
     regex = @ignorecase ? /TODO:?\s*(.+)$/i : /TODO:?\s*(.+)$/
     text = regex.match(line)
-    @todo_class.new(text[1], shortened_path(path), line_number) if text
+    @todo_class.new(text[1], path, line_number) if text
   rescue ArgumentError
     nil
-  end
-
-  private
-  def shortened_path(path)
-    path[Dir.pwd.length+1..path.length]
   end
 end
 
 class TodoFinder
-  def initialize(pattern, creator)
-    @paths = Dir[pattern].delete_if do |path|
-      File.directory?(path) || File.binary?(path)
-    end
+  def initialize(paths, creator)
+    @paths = paths
     @creator = creator
   end
 
