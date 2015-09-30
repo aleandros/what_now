@@ -34,7 +34,7 @@ will be used.
 Options
 -------
 * *--dir, -d*: Specify the directory in which to search the TODO's. It can be an absolute
-  path of anyhwere in the system, or a relative path to the current directory.
+  path of anywhere in the system, or a relative path to the current directory.
 * *--ext, -e*: Specify the extension of the files to consider. You can pass it with or without
   the dot (.rb or rb are both valid).
 * *--regex, -r*: Specify the regular expression (Perl-like) that the file names
